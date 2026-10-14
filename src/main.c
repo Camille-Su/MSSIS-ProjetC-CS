@@ -7,38 +7,36 @@
 #include <argp.h>
 
 
-
-struct arguments {
+typedef struct arguments {
     char *args[2];                
-    char *mode;                  
+    char mode;                  
     char *output_file;
-    char *input_file;            
-};
+    char *input_file;
+    char *table_file;            
+}arguments_t;
 
 static int parse_opt (int key, char *arg,struct argp_state *state){
-   struct arguments *arguments = state->input;
+   arguments_t *arguments = (arguments_t*) state->input;
 
-   switch (key)
-   {
+   switch (key){
       case 'i': 
          printf ("i\n"); 
-         arguments->input_file;
+         arguments->input_file = arg;
          break;
       case 'o': 
          printf ("o\n"); 
+         arguments->output_file = arg;
          break;
       case 't': 
          printf ("t\n"); 
+         arguments->table_file = arg;
          break;
          
       case ARGP_KEY_ARG:
-         printf("entré dans case key arg %s\n", arg);
-         if (state->arg_num == 1){
+         if (state->arg_num == 0){
             /* First argument */
-            arguments->mode = arg;
+            arguments->mode = (char) arg[0];
          }
-         printf("sorti\n");
-         printf("Le mode est : %s\n", arguments->mode);
          break;
          
       case ARGP_KEY_END:
@@ -47,8 +45,6 @@ static int parse_opt (int key, char *arg,struct argp_state *state){
    }
    return 0;
 }
-
-
 
 
 int main(int argc, char *argv[]) {
@@ -113,13 +109,11 @@ int main(int argc, char *argv[]) {
    fclose(outFile);
    printf("mode = %c\n", mode);
    */
-
+  
+   arguments_t *arguments= malloc(sizeof(arguments_t));
    struct argp argp = { options, parse_opt };
+   argp_parse (&argp, argc, argv, 0, 0, arguments);
+   printf("Mode = %c \ninput file = %s \noutput file = %s \ntable file = %s\n ", arguments->mode, arguments->input_file, arguments->output_file, arguments->table_file);
 
-
-
-   return argp_parse (&argp, argc, argv, 0, 0, 0);
-
-   
-
+   return 0;
 }
