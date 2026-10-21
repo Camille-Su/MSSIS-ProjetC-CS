@@ -1,4 +1,5 @@
 #include "mode_g.h"
+#include "t3c_entry.h"
 #include <stdio.h>
 #include <string.h>
 #include <openssl/evp.h>
@@ -6,12 +7,7 @@
 #define HASH_HEX_LEN 32 //longueur d'un hash MD5
 #define MAX_WORD_LEN 128    //arbitraire
 
-typedef struct {
-    char password[MAX_WORD_LEN];
-    char hash[HASH_HEX_LEN + 1]; //+1 pour le dernier '\0'
-} t3c_entry;
-
-int write_entry(FILE *output, const char *password, const char *hash_hex) {
+static int write_entry(FILE *output, const char *password, const char *hash_hex) {
     if (fprintf(output, "%s\t%s\n", password, hash_hex) < 0)
         return 1;
     return 0;

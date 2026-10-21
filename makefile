@@ -2,7 +2,7 @@ CC      = gcc
 CFLAGS  = -Wall -Wextra -std=c11 #options gcc
 LDLIBS  = -lcrypto	#liste des options librairie pour gcc
 
-SRCS    = src/main.c src/mode_g.c src/mode_l.c #liste des fichiers source à compiler
+SRCS    = src/main.c src/mode_g.c src/mode_l.c src/binary_tree.c #liste des fichiers source à compiler
 OBJS    = $(SRCS:.c=.o)
 
 all: t3c
