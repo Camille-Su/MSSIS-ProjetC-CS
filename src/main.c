@@ -1,8 +1,5 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <openssl/evp.h>
 #include <string.h>
-#include <assert.h>
 #include <argp.h>
 #include "mode_g.h"
 #include "mode_l.h"
@@ -21,7 +18,7 @@ typedef struct arguments {
 static struct argp_option options[] = {
    {"input", 'i', "IN_FILE", 0, "Input dictionnary file (mode G, mandatory)"},
    {"output",  'o', "OUT_FILE", 0, "Output to OUT_FILE (mode G, mandatory)"},
-   {"algo",  'a', "ALGO", 0, "Algorithm to use, MD5 by default (mode G, def=md5)"},
+   {"algo",  'a', "ALGO", 0, "Algorithm to use {md5, sha1, sha256, sha512}, MD5 by default (mode G, def=md5)"},
    {"table",  't', "TABLE_FILE",0, "path to table FILE (mode L, mandatory)"},
    { 0 }
 };
@@ -49,7 +46,6 @@ static int parse_opt (int key, char *arg,struct argp_state *state){
             argp_error(state, "Invalid positional argument : %s\n", arg);
          }
          if ((strcmp(arg, "G") == 0)){
-            /* First argument */
             arguments->mode = MODE_G;
          } else if (strcmp(arg, "L") == 0) {
             arguments->mode = MODE_L;
@@ -93,7 +89,6 @@ int main(int argc, char *argv[]) {
 
    struct argp argp = { options, parse_opt };
    argp_parse (&argp, argc, argv, 0, 0, &arguments);
-   //printf("Mode = %d \ninput file = %s \noutput file = %s \ntable file = %s\n ", arguments.mode, arguments.input_file, arguments.output_file, arguments.table_file);
 
    if (arguments.mode == MODE_G) {
       return mode_g_run(arguments.input_file, arguments.output_file, arguments.algo);

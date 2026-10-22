@@ -46,6 +46,10 @@ void addNode(t3c_entry entry, node_t *t) {
         prev = curr;
         curr = getNext(entry, curr);
     }
+    if (strcmp(entry.hash, prev->hash) == 0) {
+        addToExistingHash(prev, entry);
+        return;
+    }
     node_t *new_node = createNode(entry);
     if (strcmp(entry.hash, prev->hash) > 0) {
         prev->a = new_node;
@@ -73,23 +77,24 @@ node_t *findNode(t3c_entry entry, node_t* tree) {
 
 void addToExistingHash(node_t *tree, t3c_entry entry) {;
     node_t *node = findNode(entry, tree);
-    pass_node_t *passNode = node->passwords;
-    pass_node_t *curr = passNode;
+    pass_node_t *curr = node->passwords;;
+
     while (curr->next != NULL) {
         curr = curr->next;
     }
     curr->next = createPassNode(entry.password);
+
 }
 
 static void destroyPasswords(pass_node_t *passwords) {
     pass_node_t *curr = passwords;
-
     while(curr->next != NULL)      {
         pass_node_t *next = curr->next;
         free(curr->password);
         free(curr);
         curr = next;
     }
+    free(curr->password);
     free(curr);
 }
 
@@ -101,6 +106,7 @@ void destroyTree(node_t *n) {
     node_t *b = n->b;
     destroyPasswords(n->passwords);
     free(n->hash);
+    free(n->passwords);
     free(n);
     destroyTree(a);
     destroyTree(b);

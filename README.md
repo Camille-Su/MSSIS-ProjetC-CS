@@ -59,5 +59,8 @@ A chaque entrée utilisateur sur stdin, le programme retourne :
 * une ligne vide, si aucun mot de passe ne correspond au hash demandé
 * un ou plusieurs mots de passe séparés par \t correspondant au hash
 
-La sortie se fait en entrant une ligne vide ("\n")
+La sortie se fait en entrant 
+```bash
+exit
+```
 
