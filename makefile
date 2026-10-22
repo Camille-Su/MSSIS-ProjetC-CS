@@ -14,7 +14,7 @@ t3c: $(OBJS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f t3c src/$(OBJS)
+	rm -f t3c $(OBJS)
 
 .PHONY: all clean
 
